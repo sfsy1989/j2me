@@ -1,0 +1,45 @@
+
+default: all
+
+all:build_pcsl  build_cldc  build_midp
+	
+clean: clean_pcsl clean_cldc clean_midp
+
+clean_pcsl:
+	rm -rf $(BUILD_OUTPUT_DIR)/pcsl
+ 
+clean_cldc:
+	rm -rf $(BUILD_OUTPUT_DIR)/cldc
+  
+clean_midp:
+	rm -rf $(BUILD_OUTPUT_DIR)/midp
+ 
+
+build_pcsl:
+	cd $(MEHOME)/pcsl;make NETWORK_MODULE=bsd/qte  \
+                             GNU_TOOLS_DIR=/opt/hisi-linux/x86-arm/gcc-3.4.3-csl-uClibc-0.9.30-softvfp \
+                             PCSL_CPU=arm
+
+build_cldc:
+	cd $(JVMWorkSpace)/build/linux_arm;make ENABLE_PCSL=true  \
+                                              PCSL_OUTPUT_DIR=$(BUILD_OUTPUT_DIR)/pcsl  \
+                                              ENABLE_ISOLATES=true  \
+                                              GNU_TOOLS_DIR=/opt/hisi-linux/x86-arm/gcc-3.4.3-csl-uClibc-0.9.30-softvfp \
+                                              USE_DEBUG_ROMGEN=true \
+                                              USE_DEBUG_ROMGEN_SYMBOLS=true  \
+                                              USE_DEBUG=true
+
+build_midp:
+	cd $(MEHOME)/midp/build/linux_qte_gcc;make PCSL_OUTPUT_DIR=$(BUILD_OUTPUT_DIR)/pcsl \
+                                                 CLDC_DIST_DIR=$(BUILD_OUTPUT_DIR)/cldc/linux_arm/dist \
+                                                 TOOLS_DIR=$(MEHOME)/tools \
+                                                 TARGET_CPU=arm  \
+                                                 USE_MULTIPLE_ISOLATES=true  \
+                                                 SUBSYSTEM_LCDUI_MODULES=platform_widget \
+                                                 GNU_TOOLS_DIR=/opt/hisi-linux/x86-arm/gcc-3.4.3-csl-uClibc-0.9.30-softvfp  \
+                                                 USE_DEBUG_ROMGEN=true \
+                                                 USE_DEBUG_ROMGEN_SYMBOLS=true  \
+                                                USE_DEBUG=true
+
+.PHONY: default clean clean_pcsl clean_cldc clean_midp build_pcsl build_cldc build_midp
+  

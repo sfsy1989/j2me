@@ -1,0 +1,10 @@
+EXTRA_CFLAGS += -I$(MEHOME)/fvlib -I$(MEHOME)/fvlib/freetype-2.4.8/include/ -I$(MEHOME)/fvlib/syslib/curl/include/ -I$(MEHOME)/fvlib/syslib/curl/src/ -I$(MEHOME)/fvlib/syslib/curl/lib/  -I$(MEHOME)/fvlib/syslib/flib/include/ -I$(MEHOME)/fvlib/syslib/olib/include/ -I$(MEHOME)/fvlib/syslib/nlib/include/ -I$(MEHOME)/fvlib/syslib/opensource/iniparser/ -I$(MEHOME)/fvlib/syslib/opensource/iop/ 
+EXTRA_CFLAGS += -DFB_32BPP -DFB_USE_FREETYPE -DFV_FB_FIX
+
+#LIBS += -L$(FTM_PATH)/fvt/sdk/Hi3560E_V100R001C01SPC080/lib/  -Wl,--start-group -lpthread -lapi -lm -lc -ltde -lunify -Wl,--end-group
+ifeq ($(TARGET_ANDROID), true)
+LIBS +=  $(MEHOME)/fvlib/freetype-2.4.8/target/lib/libfreetype.a  -landroid -lm -lc -lz -lstdc++ -lOpenSLES
+else
+LIBS +=  $(MEHOME)/fvlib/freetype-2.4.8/target/lib/libfreetype.a  -lm -lc -lapi -lpthread -ltde -lunify   
+endif
+

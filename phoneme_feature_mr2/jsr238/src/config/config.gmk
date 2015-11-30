@@ -1,0 +1,181 @@
+#
+#   
+#
+# Copyright  1990-2007 Sun Microsystems, Inc. All Rights Reserved.
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version
+# 2 only, as published by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License version 2 for more details (a copy is
+# included at /legal/license.txt).
+# 
+# You should have received a copy of the GNU General Public License
+# version 2 along with this work; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301 USA
+# 
+# Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+# Clara, CA 95054 or visit www.sun.com if you need additional
+# information or have any questions.
+#
+############################################################
+# Module's Component PLATFORM Configuration file
+#
+# Platform: stubs
+############################################################
+
+
+# Build configuration options for choosing implementations
+# Currently supported values: java | platform
+#
+JSR_238_COLLATION_IMPL = java
+JSR_238_FORMAT_IMPL = java
+JSR_238_RESOURCES_IMPL = java
+
+MIDP_DEPS += CHECK_JSR_238_IMPL
+
+# If FORMAT_IMPL is java RESOURCES_IMPL must be java
+#
+.PHONY: CHECK_JSR_238_IMPL
+CHECK_JSR_238_IMPL: 
+	if [ "$(JSR_238_FORMAT_IMPL)" = "java" ] ; then \
+		if [ "$(JSR_238_RESOURCES_IMPL)" != "java" ]; then \
+			echo "ERROR: JSR_238_RESOURCES_IMPL should be "java" if JSR_238_FORMAT_IMPL is set to java"; \
+			exit -1; \
+		fi; \
+	fi
+
+
+
+# Path to native functions implementation (use either stubs or actual implementation)
+#
+JSR_238_NATIVE_SOURCE = $(JSR_238_DIR)/src/platform_global/native/$(TARGET_PLATFORM)
+#JSR_238_NATIVE_SOURCE = $(JSR_238_DIR)/src/tests/platform_global/native/resources_as_files
+
+# Additional java packages
+#
+ifeq ($(JSR_238_RESOURCES_IMPL), java)
+JSR_238_PACKAGES += \
+    com.sun.midp.jsr238
+endif
+
+# Use java_global for javadoc generation
+#
+JAVADOC_ALL_SOURCEPATH += $(JSR_238_DIR)/src/java_global/classes
+
+# Java files for the sub-system
+#
+ifeq ($(JSR_238_COLLATION_IMPL), platform)
+MODULE_JSR_238_JAVA_FILES += \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/CollationAbstractionLayerImpl.java   \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/StringComparatorImpl.java
+else
+MODULE_JSR_238_JAVA_FILES += \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/CollationAbstractionLayerImpl.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/CollationElementTable.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/CollationElementTableImpl.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/NormalizationTable.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/NormalizationTableImpl.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/StringCollator.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/StringComparatorImpl.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/StringNormalizer.java \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/midp/jsr238/SecurityInitializer.java
+endif
+
+ifeq ($(JSR_238_FORMAT_IMPL), platform)
+MODULE_JSR_238_JAVA_FILES += \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/FormatterImpl.java   \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/FormatAbstractionLayerImpl.java
+else
+MODULE_JSR_238_JAVA_FILES += \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/FormatterImpl.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/FormatAbstractionLayerImpl.java \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/midp/jsr238/SecurityInitializer.java
+endif
+
+ifeq ($(JSR_238_RESOURCES_IMPL), platform)
+MODULE_JSR_238_JAVA_FILES += \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/DevResourceBundleReader.java   \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/DevResourceManager.java   \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/DevResourceManagerFactory.java   \
+ $(JSR_238_DIR)/src/platform_global/classes/com/sun/j2me/global/ResourceAbstractionLayerImpl.java
+else
+MODULE_JSR_238_JAVA_FILES += \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/DevResourceBundleReader.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/DevResourceManager.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/DevResourceManagerFactory.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/j2me/global/ResourceAbstractionLayerImpl.java   \
+ $(JSR_238_DIR)/src/java_global/classes/com/sun/midp/jsr238/SecurityInitializer.java
+endif
+
+
+ifeq (platform, $(findstring platform, $(JSR_238_COLLATION_IMPL)_$(JSR_238_FORMAT_IMPL)_$(JSR_238_RESOURCES_IMPL)))
+# vpath for sub-system
+#
+SUBSYSTEM_JSR_238_EXTRA_VPATH += \
+ $(JSR_238_DIR)/src/platform_global/native/share   \
+ $(JSR_238_NATIVE_SOURCE)
+
+# Include path for the sub-system
+#
+SUBSYSTEM_JSR_238_EXTRA_INCLUDES += \
+ -I$(JSR_238_DIR)/src/platform_global/native/share/inc
+endif
+
+
+# Native files for the sub-system
+#
+ifeq ($(JSR_238_COLLATION_IMPL), platform)
+SUBSYSTEM_JSR_238_NATIVE_FILES += \
+ jsr238_collation_kni.c   \
+ jsr238_collation.c
+endif
+
+ifeq ($(JSR_238_FORMAT_IMPL), platform)
+SUBSYSTEM_JSR_238_NATIVE_FILES += \
+ jsr238_format_kni.c   \
+ jsr238_format.c
+ifeq ($(JSR_238_RESOURCES_IMPL), java)
+SUBSYSTEM_JSR_238_NATIVE_FILES += \
+ jsr238_resources.c
+endif
+endif
+
+ifeq ($(JSR_238_RESOURCES_IMPL), platform)
+SUBSYSTEM_JSR_238_NATIVE_FILES += \
+ jsr238_resources_kni.c   \
+ jsr238_resources.c
+endif
+
+
+# Headers used for API documentation
+#
+DOXYGEN_INPUT_LIST += \
+ $(JSR_238_DIR)/src/platform_global/native/share/inc/jsr238_collation.h   \
+ $(JSR_238_DIR)/src/platform_global/native/share/inc/jsr238_format.h   \
+ $(JSR_238_DIR)/src/platform_global/native/share/inc/jsr238_resources.h
+
+
+
+# Copy resources necessary for jsr238 java implementaion
+#
+ifeq ($(JSR_238_COLLATION_IMPL), java)
+MIDP_DEPS += jsr238_coltable_resources
+endif
+
+ifneq (,$(findstring java,$(JSR_238_FORMAT_IMPL)$(JSR_238_RESOURCES_IMPL)))
+MIDP_DEPS += jsr238_global_resources
+endif
+
+.PHONY: jsr238_coltable_resources
+jsr238_coltable_resources: $(LIBDIR)
+	@cp -f $(JSR_238_RESOURCE_PATH)/*.bin $(LIBDIR)
+
+.PHONY: jsr238_global_resources
+jsr238_global_resources: $(LIBDIR)
+	@cd $(JSR_238_RESOURCE_PATH) && find ./global -type f | grep -v SCCS/s\. | grep -v \.svn | tar -cf - -T - | tar xf - -C $(LIBDIR) $(LOG)

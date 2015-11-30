@@ -1,0 +1,167 @@
+#
+#   
+#
+# Copyright  1990-2007 Sun Microsystems, Inc. All Rights Reserved.
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version
+# 2 only, as published by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License version 2 for more details (a copy is
+# included at /legal/license.txt).
+# 
+# You should have received a copy of the GNU General Public License
+# version 2 along with this work; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301 USA
+# 
+# Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+# Clara, CA 95054 or visit www.sun.com if you need additional
+# information or have any questions.
+#
+######################################################################
+#
+# Module's Component Configuration file
+#
+# Remember: It is up to the module itself to impose rules of
+# how to compile the options. All the global Makefile needs
+# is the final def. of Java and native file lists and some
+# other def. (like VPATH)
+#
+######################################################################
+
+# Adds to global SUBSYSTEMS list
+#
+SUBSYSTEMS += jsr238
+
+# Project speficic definitions
+ifndef PROJECT_JSR_238_DIR
+PROJECT_JSR_238_DIR=$(JSR_238_DIR)
+endif
+
+# Config path for jsr238 module
+INTERNAL_JSR_238_CONFIG_DIR = $(JSR_238_DIR)/src/config
+
+# Javadoc source path
+JSR_238_SOURCEPATH += \
+ $(JSR_238_DIR)/src/common/classes
+
+JSR_238_PACKAGES += \
+    com.sun.j2me.global \
+    javax.microedition.global
+
+# Java files for the ( jsr238 ) module
+#
+MODULE_JSR_238_JAVA_FILES = \
+ $(JSR_238_DIR)/src/common/classes/javax/microedition/global/StringComparator.java   \
+ $(JSR_238_DIR)/src/common/classes/javax/microedition/global/Formatter.java   \
+ $(JSR_238_DIR)/src/common/classes/javax/microedition/global/ResourceManager.java   \
+ $(JSR_238_DIR)/src/common/classes/javax/microedition/global/UnsupportedLocaleException.java   \
+ $(JSR_238_DIR)/src/common/classes/javax/microedition/global/ResourceException.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/ResourceManager.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/AppResourceBundleReader.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/AppResourceManager.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/AppResourceManagerFactory.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/CollationAbstractionLayer.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/CommonFormatter.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/CommonStringComparator.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/DateFormatSymbols.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/DateTimeFormat.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/DigitList.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/FormatAbstractionLayer.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/LocaleHelpers.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/MessageFormat.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/NeutralFormatterImpl.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/NumberFormat.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/NumberFormatSymbols.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/Resource.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/ResourceAbstractionLayer.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/ResourceBundleReader.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/ResourceCache.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/ResourceCacheLRUImpl.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/ResourceManagerFactory.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/SerializableResource.java   \
+ $(JSR_238_DIR)/src/common/classes/com/sun/j2me/global/StringDecomposer.java
+
+
+SUBSYSTEM_JSR_238_EXTRA_VPATH = \
+
+SUBSYSTEM_JSR_238_NATIVE_FILES = \
+
+SUBSYSTEM_JSR_238_EXTRA_INCLUDES = \
+
+# I3 tests
+SUBSYSTEM_JSR_238_I3TEST_JAVA_FILES = \
+ $(JSR_238_DIR)/src/tests/i3test/javax/microedition/global/TestResourceManager.java   \
+ $(JSR_238_DIR)/src/tests/i3test/javax/microedition/global/TestFormatter.java   \
+ $(JSR_238_DIR)/src/tests/i3test/javax/microedition/global/TestStringComparator.java
+
+# path to the resource files
+JSR_238_RESOURCE_PATH = $(JSR_238_DIR)/src/tests/res
+
+
+# Include implementation-specific build options
+#
+include $(JSR_238_DIR)/src/config/config.gmk
+
+
+JAVADOC_ALL_SOURCEPATH += $(JSR_238_SOURCEPATH)
+JAVADOC_ALL_PACKAGES +=  $(JSR_238_PACKAGES)
+
+GROUP_DOC_ALL += \
+        -group "JSR238 Mobile Internationalization" \
+	$(shell echo $(JSR_238_PACKAGES) | tr ' ' $(PATHSEP))
+
+
+# Determines what option we have made and set it
+# to some variable that global makefile recognize
+#
+SUBSYSTEM_JSR_238_JAVA_FILES   = \
+    $(MODULE_JSR_238_JAVA_FILES)
+
+
+JTWI_I3TEST_JAVA_FILES	+= $(SUBSYSTEM_JSR_238_I3TEST_JAVA_FILES)
+
+# Internal paths for jsr 238 module
+#
+INTERNAL_JSR_238_CONFIG_DIR= $(JSR_238_DIR)/src/config
+
+# Include jsr 238 common properties in Configuration
+#
+SUBSYSTEM_CONFIGURATION_INPUT_FILES += \
+    $(INTERNAL_JSR_238_CONFIG_DIR)/properties_jsr238.xml \
+    $(INTERNAL_JSR_238_CONFIG_DIR)/constants_jsr238.xml
+
+ifneq ($(SUBSYSTEM_JSR_238_EXTRA_VPATH),)
+vpath % $(SUBSYSTEM_JSR_238_EXTRA_VPATH)
+endif
+
+JTWI_NATIVE_FILES	+= $(SUBSYSTEM_JSR_238_NATIVE_FILES)
+EXTRA_INCLUDES		+= $(SUBSYSTEM_JSR_238_EXTRA_INCLUDES)
+
+# Specify romizer configuration file for the jsr
+# and path where the file is located
+#
+ROMGEN_INCLUDE_PATHS += $(JSR_238_DIR)/src/config
+ROMGEN_CFG_FILES     += jsr238_rom.cfg
+
+# Native documentation to include in porting interfaces
+DOXYGEN_INPUT_LIST += \
+
+# Append JSR 238 source bundle creation to target
+source_bundle:: jsr_238_source_bundle
+
+# Create JSR 238 source in subdir 'jsr238/'
+JSR_238_SOURCE_OUTPUT_DIR=$(SOURCE_OUTPUT_DIR)/jsr238
+
+# Copy and filter JSR 238 source in JSR_238_SOURCE_OUTPUT_DIR
+jsr_238_source_bundle: SOURCE_OUTPUT_DIR
+	@echo " ... JSR 238 source bundle" $(LOG)
+	@$(call re_src_filter,$(JSR_238_DIR),$(JSR_238_SOURCE_OUTPUT_DIR),src)
+
+$(MIDP_OUTPUT_DIR)/classes.zip:: $(SUBSYSTEM_JSR_238_JAVA_FILES)
+	$(appendjavafiles)

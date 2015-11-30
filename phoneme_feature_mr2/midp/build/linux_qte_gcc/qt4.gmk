@@ -1,0 +1,35 @@
+# Show Build number
+MAINWINDOW_TITLE="$(PROJECT_NAME_SHORT) $(BUILD_ID)"
+
+# Default Qt directory
+ifndef QTOPIA_SDK_DIR
+    ifneq ($(TARGET_CPU), arm)
+        export QTOPIA_SDK_DIR = /opt/Qtopia
+    else 
+        export QTOPIA_SDK_DIR = /opt/Qtopia/omap
+    endif 
+endif
+
+QT4_DEFINES = -DFV_USE_QT4 -DFV_QTWEBKIT_FIX -DFV_QTWEBKIT_LOG -DFV_QTWEBKIT_OPT \
+    -DQT_NO_DEBUG -DQT_PLUGIN -DQT_GUI_LIB \
+    -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_WEBKIT_LIB -DQT_SHARED
+
+QT4_INCLUDES = -I$(QTOPIA_SDK_DIR)/include/qt-$(QT4_VER) \
+    -I$(QTOPIA_SDK_DIR)/include/qt-$(QT4_VER)/QtCore \
+    -I$(QTOPIA_SDK_DIR)/include/qt-$(QT4_VER)/QtGui \
+    -I$(QTOPIA_SDK_DIR)/include/qt-$(QT4_VER)/QtNetwork
+    
+ifeq ($(FTM_PRODUCT), HG604C)
+QT4_INCLUDES += -I$(FTM_PATH)/fvt/sdk/MTK_8652/include/directfb
+endif
+
+# if warnings-as-errors happen in system header files, they are just ignored
+EXTRA_INCLUDES  += $(QT4_INCLUDES)
+EXTRA_CFLAGS	+= $(QT4_DEFINES) -DMAINWINDOW_TITLE=\"$(MAINWINDOW_TITLE)\"
+
+LIBS		+= -Wl,-rpath,$(QTOPIA_SDK_DIR)/lib/qt-$(QT4_VER)/ -L$(QTOPIA_SDK_DIR)/lib/qt-$(QT4_VER)/ -lQtCore -lQtGui -lQtNetwork
+
+ifeq ($(FTM_PRODUCT), HG604C)
+LIBS        += -L$(FTM_PATH)/fvt/sdk/MTK_8652/lib/ -ldirect -ldirectfb  -lfusion-1.2
+endif
+

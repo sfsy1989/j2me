@@ -1,0 +1,117 @@
+#include <android_native_app_glue.h>
+
+#include <errno.h>
+#include <jni.h>
+#include <sys/time.h>
+#include <time.h>
+#include <android/log.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <dlfcn.h>
+#include <fcntl.h>
+
+#define  LOG_TAG    "libplasma"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGW(...)  __android_log_print(ANDROID_LOG_WARN,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+
+#define J2ME_LIB_PATH "/data/data/com.fonsview.FvJ2ME/lib/libj2me.so"
+#define J2ME_LIB_PATH_BK "/system/lib/libj2me.so"
+#define SKIN_BIN_PATH "/data/data/com.fonsview.FvJ2ME/lib/libskin.so"
+#define SKIN_BIN_PATH_BK "/system/lib/libskin.so"
+
+struct android_app * my_state;
+int (*fileInstall)(int x, char **y);
+int (*runNam)(int x, char **y);
+int (*setParam)(struct android_app * state);
+void *handle;
+
+static void runNams_entry(){
+   char * argv1[] = {"/data/jvm/runNams_g","-runMidlet","1"};
+   set_android_app_param(my_state);
+   runNams(3, argv1);   
+}
+
+static void *j2me_vm_thread(void *arg){
+    char * argv2[] = {"/data/jvm/fileInstaller_g", "/data/jvm/suite.jar"};
+    fileInstaller(2,argv2);
+    runNams_entry();
+    return 0;
+}
+
+void loadShareLib()
+{
+    const char * errmsg;
+    handle = dlopen(J2ME_LIB_PATH, RTLD_NOW);
+    if(handle == NULL){
+    	handle = dlopen(J2ME_LIB_PATH_BK, RTLD_NOW);
+   	if(handle == NULL){
+		LOGI("load share lib failed");
+		return -1;
+    	}
+    }
+    fileInstall = dlsym(handle, "fileInstaller");
+    runNam = dlsym(handle,"runNams");
+    setParam = dlsym(handle,"set_android_app_param");
+    if((errmsg = dlerror()) != NULL)
+    {
+       LOGI("%s\n", errmsg);
+       return -1;
+    }
+
+}
+
+void copySkinFile()
+{
+	char cmd[128] = {0};
+	if(!access(SKIN_BIN_PATH_BK,F_OK)){
+		LOGI("[xiaoniu]  skin file exists");
+		sprintf(cmd,"cp -rf %s /data/jvm/",SKIN_BIN_PATH_BK);
+		system(cmd);
+	}else{
+		LOGI("[xiaoniu]  skin file not find");
+		if(!access(SKIN_BIN_PATH,F_OK)){
+			sprintf(cmd,"cp -rf %s /data/jvm/",SKIN_BIN_PATH);
+			system(cmd);
+		}
+	}
+}
+
+void android_main(struct android_app* state) {
+    pthread_attr_t attr;
+    pthread_t ptid1;
+    copySkinFile();
+ //   loadShareLib();
+    app_dummy();
+    my_state = state;
+    pthread_attr_init (&attr);
+    pthread_attr_setdetachstate (&attr, PTHREAD_CREATE_DETACHED);    
+    pthread_create(&ptid1,&attr,j2me_vm_thread,NULL);
+    pthread_attr_destroy (&attr);
+    while (1) {
+        // Read all pending events.
+        int ident;
+        int events;
+        struct android_poll_source* source;
+
+        // If not animating, we will block forever waiting for events.
+        // If animating, we loop until all events are read, then continue
+        // to draw the next frame of animation.
+        while ((ident=ALooper_pollAll(0, NULL, &events,
+                (void**)&source)) >= 0) {
+            // Process this event.
+            if (source != NULL) {
+                source->process(state, source);
+            }
+
+            // Check if we are exiting.
+            if (state->destroyRequested != 0) {
+		//dlclose(handle);
+		//exit(1);
+            }
+        }
+    }
+    //pthread_join(ptid1,NULL);  
+}

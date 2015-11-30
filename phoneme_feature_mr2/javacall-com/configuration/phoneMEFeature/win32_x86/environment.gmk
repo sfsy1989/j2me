@@ -1,0 +1,83 @@
+#
+#
+# Copyright  1990-2007 Sun Microsystems, Inc. All Rights Reserved.
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version
+# 2 only, as published by the Free Software Foundation. 
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License version 2 for more details (a copy is
+# included at /legal/license.txt). 
+# 
+# You should have received a copy of the GNU General Public License
+# version 2 along with this work; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301 USA 
+# 
+# Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+# Clara, CA 95054 or visit www.sun.com if you need additional
+# information or have any questions. 
+#
+
+ifeq ($(JAVACALL_DIR),)
+$(error JAVACALL_DIR is not set.)
+endif
+
+ifeq ($(JAVACALL_PROJECT_DIR),)
+$(error JAVACALL_PROJECT_DIR is not set.)
+endif
+
+include $(JAVACALL_PROJECT_DIR)/build/list.gmk
+
+COM_JSR_LIST+=JSR_75 JSR_82 JSR_179 JSR_205 JSR_238
+
+JSR_179_JC_IMPL_PATH=$(JAVACALL_PROJECT_DIR)/implementation/win32
+
+JSR_205_JC_IMPL_PATH=$(JAVACALL_PROJECT_DIR)/implementation/win32
+
+JSR_238_JC_IMPL_PATH=$(JAVACALL_PROJECT_DIR)/implementation/win32
+
+JSR_75_JC_IMPL_PATH=$(JAVACALL_PROJECT_DIR)/implementation/win32
+
+JSR_82_JC_IMPL_PATH=$(JAVACALL_PROJECT_DIR)/implementation/win32
+
+RESOURCE_IMAGES_DIR=$(JAVACALL_PROJECT_DIR)/implementation/win32/midp/res/images
+
+SOURCE_OUTPUT_LIST += $(JAVACALL_PROJECT_DIR)/configuration/stubs javacall-com/configuration
+SOURCE_OUTPUT_LIST += $(foreach jsr,$(COM_JSR_LIST), $(if $(PREFIX_$(USE_$(jsr))), $(JAVACALL_PROJECT_DIR)/implementation/stubs/$($(jsr)_JC_DIR) javacall-com/implementation/stubs))
+SOURCE_OUTPUT_LIST += $(foreach jsr,$(COM_JSR_LIST), $(if $(PREFIX_$(USE_$(jsr))), $($(jsr)_JC_IMPL_PATH)/$($(jsr)_JC_DIR) javacall-com/implementation/win32))
+SOURCE_OUTPUT_LIST += $(JAVACALL_PROJECT_DIR)/configuration/phoneMEFeature/win32_x86 javacall-com/configuration/phoneMEFeature
+SOURCE_OUTPUT_LIST += $(RESOURCE_IMAGES_DIR) javacall-com/implementation/win32/midp/res
+
+# Extra settings for JSR 238 implementation
+
+# Avoiding using local digits in number formatting (required for TCK tests passing)
+#
+JSR_238_FORMATTER_DO_NOT_USE_NATIVE_DIGITS = TRUE
+
+# Placing negative sign after the number will cause TCK to fail
+#
+JSR_238_FORMATTER_NEGATIVE_SIGN_ALWAYS_FIRST = TRUE
+
+ifeq ($(JSR_238_FORMATTER_DO_NOT_USE_NATIVE_DIGITS), TRUE)
+SPECIFIC_DEFINITIONS += -DNOT_USE_NATIVE_DIGITS=1 
+endif
+
+ifeq ($(JSR_238_FORMATTER_NEGATIVE_SIGN_ALWAYS_FIRST), TRUE)
+SPECIFIC_DEFINITIONS += -DMINUS_ALWAYS_INFRONT=1 
+endif
+
+ifeq ($(USE_JSR_205),true)
+SPECIFIC_DEFINITIONS+= -DENABLE_JSR_205=1 
+ifeq ($(USE_JSR_120),)
+$(error USE_JSR_205 supposes that USE_JSR_120 is also true)
+endif
+endif
+
+include $(JAVACALL_PROJECT_DIR)/build/common.gmk
+
+include $(JAVACALL_DIR)/configuration/phoneMEFeature/win32_x86/environment.gmk

@@ -1,0 +1,693 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+  <head>
+    <title>Release Notes - phoneME Feature</title>
+    <link rel="stylesheet" href="./share/document.css" type="text/css">
+ </head>
+
+<body>
+<table class="full-width">
+  <!-- formatting table -->
+  <tr> 
+    <tr>
+      <td class="sun-darkblue">&nbsp;</td>
+    </tr>
+    <td class=sun-darkblue> 
+      <h1>Release Notes</h1>        
+      <h2>
+        phoneME&#153; Feature MR2
+      </h2>        
+      <h4>May 2007</h4>
+    </td>
+  </tr>
+  <tr> 
+    <td class=sun-lightblue>&nbsp;</td>
+  </tr>
+</table>
+
+<p class="breadcrumb">
+  <a href="../index.html">Home</a>
+  &gt;
+  Release Notes
+</p>
+
+
+
+<h2 class="Head1">Table of Contents</h2>
+<dl>
+  <dd><a href="#introduction">Introduction</a></dd>
+  <dd><a href="#platforms">Supported Platforms</a></dd>
+  <dd><a href="#notes">Implementation Notes</a></dd>
+  <dd><a href="#known_bugs_and_issues">Known Bugs</a></dd>
+</dl>
+
+<a name="introduction"></a><a name="_maincontent"></a>
+<h2 class="Head1">Introduction</h2>
+
+<p>
+phoneME Feature software is an optimized Java&#153; ME stack.
+This implementation supports multitasking and
+is built upon MIDP 2.1.
+</p>
+
+<p>
+When phoneME Feature software runs multiple MIDlets, it uses a single OS
+process. Therefore, a single instance of Java Virtual Machine can execute
+several applications simultaneously, providing each of them with a separate
+runtime environment. All running applications are isolated so that from the
+application's point of view, it looks as if each application is executed in
+its own virtual machine.
+</p>
+
+<p>
+phoneME Feature software is for developers who port MIDP and
+associated technologies to mobile devices. It is also useful to application
+developers who want to work with the very latest Java ME technologies, even
+before these technologies are ported to real devices.
+</p>
+
+<p>
+The following features are part of phoneME Feature software, version MR2:
+<p>
+
+<ul>
+  <li>High performance implementation of the Java ME platform stack</li>
+  <li>
+    Modular architecture which supports multiple implementations
+    per functional area (storage, networking, user interface, etc.)
+  </li>
+  <li>Subsystem, directory, and library portability</li>
+  <li>Minimal platform-specific code</li>
+  <li>
+    Multitasking capabilities and support for multiple, simultaneous 
+    applications (MIDlets)
+  </li>
+  <li>Native Application Management API</li>
+  <li>Native Resource Management API</li>
+  <li>Implements CLDC 1.1 (JSR 139) and MIDP 2.1 (JSR 118)</li>
+  <li>
+    Implements the following optional APIs:
+    <ul>
+      <li>PDA Optional Packages for the J2ME&#153; Platform (JSR 75)</li>
+      <li>Java APIs for Bluetooth (JSR 82)</li>
+      <li>Wireless Messaging API 1.1 (JSR 120)</li>
+      <li>Mobile Media API (JSR 135)
+      <li>J2ME Web Services Specification (JSR 172)</li>
+      <li>Security and Trust Services API for J2ME (JSR 177)</li>
+      <li>Location API for J2ME (JSR 179)</li>
+      <li>SIP API for J2ME (JSR 180)</li>
+      <!--<li>Mobile 3D Graphics API for J2ME (JSR 184)</li>-->
+      <li>Wireless Messaging API 2.0 (JSR 205)</li>
+      <li>Content Handler API (JSR 211)</li>
+      <li>Scalable 2D Vector Graphics API for J2ME (JSR 226)</li>
+      <li>Payment API (JSR 229)</li>
+      <!--<li>Advanced Multimedia Supplements (JSR 234)</li>-->
+      <li>Mobile Internationalization API (JSR 238)</li>
+      <li>Java Binding for the OpenGL&reg; ES API (JSR 239)</li>
+    </ul>
+  </li>
+</ul>
+
+<a name="platforms"></a>
+<h2 class="Head1">Supported Platforms</h2>
+
+<p>
+Following are the supported target platforms for <i>running</i> an
+implementation of
+phoneME Feature software:
+</p>
+
+<ul>
+  <li>Texas Instruments P2SAMPLE64-V6 OMAP 730 with Linux/ARM  
+  <li>Linux/x86
+  <li>Windows/x86 (which runs the product in emulation mode)
+</ul>
+
+<p>The supported platforms for <i>building</i> an implementation of the 
+phoneME Feature software are Linux/x86 and Windows/x86.</p>
+
+<h3 class="Head3">Building on Linux</h3>
+
+<p>A Linux build system needs the following tools and software:</p>
+
+<table>
+  <thead>
+    <tr> 
+      <th class="sun-verylightblue" scope="col">Description</th>
+      <th class="sun-verylightblue" scope="col">Definitely Works</th>
+      <th class="sun-verylightblue" scopr="col">Might Work</th>
+      <th class="sun-verylightblue" scopr="col">Does Not Work</th>
+    </tr>
+  </thead>
+  
+  <tfoot>
+    <tr> 
+      <td colspan="4"><hr class="pTableHr" /> </td>
+    </tr>
+  </tfoot>
+  
+  <tbody>
+
+    <tr>
+      <td>Operating System</td>
+      <td>Ubuntu 6.06</td>
+      <td>Other versions of Linux</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Compiler</td>
+      <td>GCC 3.4.6</td>
+      <td>Other versions of GCC</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>JDK&#153;</td>
+      <td>version 1.4.2</td>
+      <td>Any 1.4.x version</td>
+      <td>JDK 1.5 and 1.6</td>
+    </tr>
+
+    <!--
+    <tr>
+      <td>Virtual Machine</td>
+      <td>CLDC HotSpot Implementation version 2.0</td>
+      <td></td>
+      <td></td>
+    </tr>
+    -->
+
+    <tr>
+      <td>API Documentation</td>
+      <td><a href="http://doxygen.org/">Doxygen</a> 1.4.4</td>
+      <td>Other versions of Doxygen</td>
+      <td></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<p>
+Doxygen is only required if you wish to generate the API documentation from the
+source code.
+</p>
+
+<!--
+<ul>
+  <li>Ubuntu 6.06</li>
+  <li>GCC 3.4.6</li>
+  <li>JDK&#153; version 1.4.2</li>
+  <li>CLDC HotSpot Implementation version 2.0</li>
+</ul>
+-->
+
+<p>
+To cross-compile for the supported P2 OMAP730 board (see below), you need
+these additional tools:
+</p>
+
+<table>
+  <thead>
+    <tr> 
+      <th class="sun-verylightblue" scope="col">Description</th>
+      <th class="sun-verylightblue" scope="col">Definitely Works</th>
+      <th class="sun-verylightblue" scopr="col">Might Work</th>
+      <th class="sun-verylightblue" scopr="col">Does Not Work</th>
+    </tr>
+  </thead>
+  
+  <tfoot>
+    <tr> 
+      <td colspan="4"><hr class="pTableHr" /> </td>
+    </tr>
+  </tfoot>
+  
+  <tbody>
+
+    <tr>
+      <td>Cross Compiler</td>
+      <td>GCC cross compiler 3.3.1</td>
+      <td>Other cross compiler versions</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Device Operating System</td>
+      <td>MontaVista Linux Consumer Electronics Edition 3.1 (2.4.20 kernel)</td>
+      <td>Other device operating systems</td>
+      <td></td>
+    </tr>
+
+    <!--
+    <tr>
+      <td>Device GUI</td>
+      <td>Qt/Embedded 2.3.10.</td>
+      <td>Other Qt/Embedded 2.3.x versions</td>
+      <td></td>
+    </tr>
+    -->
+
+  </tbody>
+</table>
+
+<!--
+<p>
+Qt/Embedded is required only for <code>qt</code> builds.
+</p>
+-->
+
+<!--
+<ul>
+  <li>GCC cross compiler 3.3.1</li>
+  <li>MontaVista Linux Consumer Electronics Edition 3.1 (2.4.20 kernel)</li>
+</ul>
+-->
+
+<h3 class="Head3">Building on Windows</h3>
+
+<p>A Windows/x86 build system needs the following tools and software:</p>
+
+<table>
+  <thead>
+    <tr> 
+      <th class="sun-verylightblue" scope="col">Description</th>
+      <th class="sun-verylightblue" scope="col">Definitely Works</th>
+      <th class="sun-verylightblue" scopr="col">Might Work</th>
+      <th class="sun-verylightblue" scopr="col">Does Not Work</th>
+    </tr>
+  </thead>
+  
+  <tfoot>
+    <tr> 
+      <td colspan="4"><hr class="pTableHr" /> </td>
+    </tr>
+  </tfoot>
+  
+  <tbody>
+
+    <tr>
+      <td>Operating System</td>
+      <td>Windows XP</td>
+      <td>Windows 2000, Windows 2003</td>
+    </tr>
+
+    <tr>
+      <td>Compiler</td>
+      <td>
+        Microsoft Visual C++ 6.0 Professional
+      </td>
+      <td></td>
+      <td>Microsoft Visual Studio 2005</td>
+    </tr>
+
+    <tr>
+      <td>Unix-like environment</td>
+      <td>
+        <a href="ftp://ftp.sunfreeware.com/pub/freeware/contributions/cygwin/cyg4me1_1_full.zip">
+          Cyg4Me
+        </a>
+      </td>
+      <td>Full CygWin (with appropriate mounts)</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>JDK&#153;</td>
+      <td>version 1.4.2</td>
+      <td>Any 1.4.x version</td>
+      <td>JDK 1.5 and 1.6</td>
+    </tr>
+
+    <!--
+    <tr>
+      <td>Virtual Machine</td>
+      <td>CLDC HotSpot Implementation version 2.0</td>
+      <td></td>
+      <td></td>
+    </tr>
+    -->
+
+    <tr>
+      <td>API Documentation</td>
+      <td><a href="http://doxygen.org/">Doxygen</a> 1.4.4</td>
+      <td>Other versions of Doxygen</td>
+      <td></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<p>
+Doxygen is only required if you wish to generate the API documentation from the
+source code.
+</p>
+
+<!--
+<ul>
+  <li>Windows 2000 or Windows XP</li>
+  <li>MSVC++ 6.0 or Microsoft Visual Studio .NET 2003</li>
+  <li>
+    <a href="ftp://ftp.sunfreeware.com/pub/freeware/contributions/cygwin/cyg4me1_1_full.zip">
+      Cyg4Me
+    </a>, a version of Cygwin for building Java ME technology. Unzip the
+    archive and ensure that its <code>bin</code> directory is the first
+    element in your <code>PATH</code>.
+  </li>
+  <li>JDK version 1.4.2</li>
+  <li>CLDC HotSpot Implementation, version 2.0</li>
+</ul>
+-->
+
+<a name="run"></a>
+<h2 class="Head1">Running</h2>
+
+<p>
+The general operation of the phoneME Feature software is
+described in the <i>Tools
+Guide</i>, part of the Sun Java Wireless Client documentation.
+</p>
+
+<ul>
+  <li>
+    <a href="http://java.sun.com/javame/reference/docs/sjwc-2.0-web/docs/ToolsGuide-html/cmdline-exes.html">
+      Sun Java Wireless Client 2.0 <i>Tools Guide</i>, Chapter 5
+    </a>
+  </li>
+</ul>
+
+<a name="notes"></a>
+<h2 class="Head1">Implementation Notes</h2>
+
+<a name="chameleon"></a>
+<h3 class="Head3">Skin Property Loading</h3>
+
+<p>
+In this release, Chameleon skin properties can be loaded dynamically.
+When this option is on (the default),
+you can
+adjust skin properties during development without rebuilding the entire
+phoneME Feature software.
+</p>
+
+<h3 class="Head3">Whitespace Handling for Descriptor Properties</h3>
+
+<p>
+When installing a trusted midlet suite, phoneME Feature software expects an exact
+match between
+the values of the properties from the application descriptor file and the
+values of the same properties in the MIDlet suite JAR file manifest. The
+strings
+representing the values are compared, including the leading and trailing
+spaces. For example, the following properties are considered to be different
+(the first one has an extra space after the first <code>HelloMIDlet</code>):
+</p>
+
+<pre>
+MIDlet-1: HelloMIDlet , , HelloMIDlet
+MIDlet-1: HelloMIDlet, , HelloMIDlet
+</pre>
+
+<h3 class="Head3">Keystrokes and the <code>qvfb</code> Window</h3>
+
+<p>
+When you view the executable output in a <code>qvfb</code> window, keystroke
+events might not be delivered to the phoneME Feature software until you click
+inside the window.
+</p>
+
+<h3 class="Head3">Limited Path Lengths When Using the JavaCall&#153; API</h3>
+
+<p>
+The implementation chooses record store file names based on the location of the
+binary executables. The maximum path length for these files is 128. If the path
+to the binary executable files is too long, you will encounter errors with
+record stores. This can also happen if you are using <code>MIDP_HOME</code>
+to point to the binary executable files. If you encounter this problem,
+move your binaries to a location with a shorter path.
+</p>
+
+<p>
+For any file name used in the JavaCall API Windows/x86 implementation (for example,
+a file name used in the JSR 75 FileConnection API), the maximum length is 256.
+</p>
+
+<h3 class="Head3">Use of <code>MIDP_HOME</code> Environment Variable</h3>
+
+<p>
+The implementation chooses the MIDP home directory (where the <code>appdb</code>
+and <code>lib</code> directories live) based on several rules.
+If <code>MIDP_HOME</code> is set, its value is used unmodified.
+Otherwise, the software searches for the <code>appdb</code> directory in the
+following places:
+</p>
+
+<ul>
+  <li>
+    Current directory, if the executable is available in the <code>PATH</code>
+  </li>
+  <li>
+    Parent directory of the executable
+  </li>
+  <li>
+    Grandparent directory of the executable
+  </li>
+</ul>
+
+<a name="jsr-135"></a>
+<h3 class="Head3">JSR 135 and MIDP Audio Supported Only on Win32/i386</h3>
+<p>
+Due to the unavailability of needed drivers on the P2SAMPLE64-V6 reference
+platform, JSR 135, the MIDP Audio Building Block (ABB) APIs, and the sound 
+functionality they provide, are supported only on the Win32/i386 platform.  
+On the P2 board, the phoneME Feature software is compliant with the 
+<i>MIDP 2.1 Specification</i>, except for the ABB requirement.
+</p>
+
+<a name="known_bugs_and_issues"></a>
+<h2 class="Head1">Known Bugs</h2>
+<p>
+
+<p>
+The following high-severity bugs are known at the time of this release.
+</p>
+
+<table>
+  <thead>
+
+    <tr> 
+      <th class="sun-verylightblue" scope="col">Bug ID</th>
+      <th class="sun-verylightblue" scope="col">Description</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr> 
+      <!--
+      <td colspan="2"><hr class="pTableHr" /> </td>
+      -->
+    </tr>
+  </tfoot>
+  <tbody>
+  
+    <tr>
+      <td>6370822</td>
+      <td>
+        The Windows build fails when pathnames are too long,
+        because of parameter length restrictions in Cygwin.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6400182</td>
+      <td>
+        <code>CustomItem</code> is drawn incorrectly in some cases.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6424101</td>
+      <td>
+        On Linux platforms, some tests that play sound might fail with
+        <code>MediaException</code> due to restricted media support
+        for these platforms.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6443747</td>
+      <td>
+        In case of MVM, a complex sequence of foreground and input modes
+        switches may cause installation functionality to become inaccessible
+        from the AMS GUI.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6521289</td>
+      <td>
+        Media events posted around virtual machine suspend and resume might be lost.
+        Media subsytem might require proper plugging into suspend and resume framework.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6523465</td>
+      <td>
+        Some tests for multiple messages recipients fail,
+        exceeding receive timeout.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6532810</td>
+      <td>
+        For WMA Push records, the allowed sender filter might work incorrectly
+        for some sophisticated sender numbers.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6535880</td>
+      <td>
+        An object drawn by means of SVG might sometimes have incorrect extent
+        of transparency.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6538189</td>
+      <td>
+        On Windows, some status icons might be missing from the indicator bar.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6539790</td>
+      <td>
+        Rarely, if a MIDlet is installed as a content handler (CHAPI), its
+        manual launch might fail with a <code>NullPointerException</code>.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6539823</td>
+      <td>
+        If there are many command objects in a <code>Canvas</code>, menus
+        might be overlapped by the <code>Canvas</code>.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6543514</td>
+      <td>
+        Some tests for MMAPI encounter <code>MediaException</code>s due to
+        restricted media support.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6544936</td>
+      <td>
+        On the Linux x86 platform, some tests for datagram data transfer might
+        fail when launched in a batch mode. They pass when launched separately.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545755</td>
+      <td>
+        Two tests for server socket connection fail.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545758</td>
+      <td>
+        Two tests for socket connection methods do not pass.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545824</td>
+      <td>
+        FF command does not work properly in an MMAPI test for MIDI player.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545825</td>
+      <td>
+        MIDI players do not work properly in some MMAPI tests due to
+        restricted media support.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545834</td>
+      <td>
+        MIDI players do not work properly in some MMAPI tests due to
+        restricted media support.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545836</td>
+      <td>
+        MIDI players do not work properly in some MMAPI tests due to
+        restricted media support.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545848</td>
+      <td>
+        When recorded sound is replayed, sound distortions may be heard
+        due to restricted media support.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6545855</td>
+      <td>
+        A <code>StringItem</code> content with hyperlink might be shown improperly.
+      </td>
+    </tr>
+    
+    <tr>
+      <td>6548519</td>
+      <td>
+        In some unusual cases on Linux x86, the scrollbar is not controlled
+        properly from the keyboard.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6548739</td>
+      <td>
+        Compiling the system with gcc 4.1.2 results in many compiler warnings.
+        You might be able to build the system successfully by removing
+        <code>-Werror</code> from <code>CFLAGS</code>.
+      </td>
+    </tr>
+
+    <tr>
+      <td>6549015</td>
+      <td>
+        A scrollbar on an alert may be damaged if a MIDlet with long alert
+        shown is moved to the background and than back to the foreground.
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<hr class="pHr">
+
+<p class=copyright><a href="share/copyright.html">Copyright</a> &#169;
+  2007 Sun Microsystems, Inc. All rights reserved.
+  Use subject to license terms. </p>
+  
+</body>
+</html>

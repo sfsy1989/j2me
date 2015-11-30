@@ -1,0 +1,6 @@
+SRC = dgif_lib.c gifalloc.c gif_err.c gifdec.c
+HEADER = gif_hash.h gif_lib_private.h gif_config.h gif_lib.h
+
+gifdec: $(SRC) $(HEADER)
+	gcc -g -DFV_TEST_GIF -o gifdec $(SRC) 
+	

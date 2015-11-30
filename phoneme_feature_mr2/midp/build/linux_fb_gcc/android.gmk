@@ -1,0 +1,6 @@
+EXTRA_CFLAGS += -DFB_32BPP -DFB_USE_FREETYPE -DFV_FB_FIX
+
+EXTRA_CFLAGS += -DANDROID -I$(MEHOME)/fvlib/freetype-2.4.8/include  -I$(MEHOME)/fvlib
+LIBS += $(MEHOME)/fvlib/freetype-2.4.8/target/lib/libfreetype.a  -landroid -lm -lc -lz
+
+

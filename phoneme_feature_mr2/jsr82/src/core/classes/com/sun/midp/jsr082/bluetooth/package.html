@@ -1,0 +1,49 @@
+<!--
+     
+  
+   Copyright  2007  Sun Microsystems, Inc. All rights reserved.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+  <HEAD>
+    <TITLE>JSR82 Bluetooth Porting Interface</TITLE>
+  </HEAD>
+  <BODY>
+Porting interface for device inquiry, service discovery, remote device name
+retrieval, access to local SDDB, authentication and encryption.
+<p>
+Design Overview
+<p>
+This package contains classes which are to be subclassed or directly modified
+during porting to various native Bluetooth stack implementations.
+GenericBluetoothStack java class and CBlueZStack C++ class are provided as a
+reference implementation which was tested with the official Linux Bluetooth
+stack.
+<p>
+Central to the package is the abstract BluetoothStack class, which provides
+services for device inquiry, remote device name retrieval, access to local
+service discovery database (SDDB), authentication and encryption.
+<p>
+Device inquiry is asynchronous operations, meaning that the corresponding class
+method call is non-blocking, and notification is used to deliver data when it
+arrives. All other methods are blocking, including retrieval of a remote device
+name (which is actually processed asynchronously in a different thread).
+<p>
+It is assumed that the native stack implementation provides methods to poll
+for events such as inquiry result and remote name result, and returns such
+events in binary form (the format is stack-specific). This binary data is then
+transformed into Java event classes, which are processed accordingly.
+<p>
+Separate threads are used for event polling and event delivery. This allows
+to continue receiving and storing events in cases such as when processing of
+a certain event can only be ended with receiving another event (e.g. to
+simulate synchronous remote name retreival).
+<p>
+A generic implementation of the BluetoothStack is available,
+which relies on Bluetooth HCI interface for device inquiry and remote name
+retrieval. GenericBluetoothStack should generally be used as a base for the
+port, unless the native Bluetooth stack provides more convenient API for
+operations such as device inquiry, remote name retrieval, authentication and
+encryption.
+  </BODY>
+</HTML>
